@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.product.dto.JwtUserPrincipal;
+import com.app.product.jwt.dto.JwtUserPrincipal;
 import com.app.product.model.Product;
 import com.app.product.service.ProductService;
 

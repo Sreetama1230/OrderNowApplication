@@ -38,8 +38,12 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/order/place").hasRole("BUYER")
-						.requestMatchers(HttpMethod.GET, "/order/**").permitAll()
+				.authorizeHttpRequests(
+						auth -> auth
+						.requestMatchers(HttpMethod.POST, "/order/place").hasRole("BUYER")
+						.requestMatchers(HttpMethod.POST, "/order/addtocart").hasRole("BUYER")
+						.requestMatchers(HttpMethod.POST, "/order/checkout").hasRole("BUYER")
+						.requestMatchers(HttpMethod.GET, "/order/**").hasRole("BUYER")
 						.anyRequest().authenticated())
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).build();
 	}

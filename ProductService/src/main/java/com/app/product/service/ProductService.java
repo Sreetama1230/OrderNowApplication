@@ -7,11 +7,10 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.stereotype.Service;
 
-import com.app.product.event.OrderEvent;
-import com.app.product.event.OrderItemEvent;
+import com.app.core.entity.event.OrderEvent;
+import com.app.core.entity.event.OrderItemEvent;
 import com.app.product.exception.InsufficientQuantityException;
 import com.app.product.exception.InvalidProductOrQuantityException;
 import com.app.product.exception.ProductNotFoundException;
@@ -50,21 +49,27 @@ public class ProductService {
 
 	}
 
+	public Product updateProduct(Product product) {
+
+		return productDao.save(product);
+
+	}
+
 	@Transactional
 	public boolean isOrderCanBePlaced(OrderEvent event) {
 		Map<Long, Long> ids = new HashMap<>();
 
 		for (OrderItemEvent e : event.getItems()) {
-			if(e.getProductId() <= 0 || e.getQuantity() <= 0 ){
+			if (e.getProductId() <= 0 || e.getQuantity() <= 0) {
 				throw new InvalidProductOrQuantityException("either product or quantity is not accurate");
 			}
 			ids.put(e.getProductId(), ids.getOrDefault(e.getProductId(), 0L) + e.getQuantity());
 
 		}
-			//to reducing the deadlock risks sorting it
+		// to reducing the deadlock risks sorting it
 		List<Product> products = productDao.findAllByIdForUpdate(ids.keySet().stream().sorted().toList());
-		
-		if(ids.size() != products.size()) {
+
+		if (ids.size() != products.size()) {
 			throw new ProductNotFoundException("One or more products do not exist");
 		}
 		List<Product> updatedProducts = new ArrayList<>();

@@ -1,6 +1,6 @@
 package com.app.auth.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,8 +16,12 @@ import com.app.auth.service.AuthService;
 @RequestMapping("/auth")
 public class AuthController {
 
-	@Autowired
-	private AuthService authService;
+	private final AuthService authService;
+
+
+	AuthController(AuthService authService) {
+		this.authService = authService;
+	}
 	
 	
 	@PostMapping("/register")

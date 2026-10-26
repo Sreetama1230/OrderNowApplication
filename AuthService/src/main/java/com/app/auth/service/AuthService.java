@@ -12,6 +12,7 @@ import com.app.auth.customuserdetails.CustomUserDetailsService;
 import com.app.auth.dao.UserDao;
 import com.app.auth.dto.AuthRequest;
 import com.app.auth.entities.User;
+import com.app.auth.exception.UserCreationError;
 import com.app.auth.jwt.JwtUtils;
 
 @Service
@@ -33,7 +34,12 @@ public class AuthService {
 
 	public User register(User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		return userDao.save(user);
+		try {
+			return userDao.save(user);
+		}catch(Exception e) {
+			throw new UserCreationError(e.getMessage());
+		}
+	
 	}
 
 	public String login(AuthRequest authRequest) {

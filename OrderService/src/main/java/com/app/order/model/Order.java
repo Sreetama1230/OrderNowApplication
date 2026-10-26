@@ -32,6 +32,11 @@ public class Order {
 	@Enumerated(EnumType.STRING)
 	private OrderStatus orderStatus;
 
+	
+	@Column
+	private double totalAmount;
+	
+
 	public long getOrderId() {
 		return orderId;
 	}
@@ -64,19 +69,30 @@ public class Order {
 		this.orderStatus = orderStatus;
 	}
 
-	public Order(long orderId, long userId, List<OrderItem> items, OrderStatus orderStatus) {
-		super();
-		this.orderId = orderId;
-		this.userId = userId;
-		this.items = items;
-		this.orderStatus = orderStatus;
+	
+
+	public double getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(double totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 
 	public Order() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
+	public Order(long userId, List<OrderItem> items, OrderStatus orderStatus, double totalAmount) {
+		super();
+		this.userId = userId;
+		this.items = items;
+		this.orderStatus = orderStatus;
+		this.totalAmount = totalAmount;
+	}
+
+
 	
 
 }

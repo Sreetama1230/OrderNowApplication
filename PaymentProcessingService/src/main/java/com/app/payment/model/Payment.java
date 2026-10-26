@@ -1,16 +1,47 @@
 package com.app.payment.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.app.payment.enums.PaymentStatus;
+import com.app.core.entity.event.enums.PaymentStatus;
+import com.app.core.entity.event.enums.PaymentType;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Payment {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long paymentId;
+	@Column
 	private long orderId;
-	private long amount;
+	@Column
+	private BigDecimal amount;
+	@Column
+	@Enumerated(EnumType.STRING)
 	private PaymentStatus status;
+	@Column
+	private PaymentType paymentType;
+	@Column
 	private LocalDateTime createdAt;
+	@Column(nullable = false)
+	private long userId;
+	@ManyToOne
+	@JoinColumn(name = "account_id")
+	private Account account;
+	
+	@Column(unique = true, nullable = false)
+	private String uniqueKey;
+	
 	public long getPaymentId() {
 		return paymentId;
 	}
@@ -23,12 +54,7 @@ public class Payment {
 	public void setOrderId(long orderId) {
 		this.orderId = orderId;
 	}
-	public long getAmount() {
-		return amount;
-	}
-	public void setAmount(long amount) {
-		this.amount = amount;
-	}
+
 	public PaymentStatus getStatus() {
 		return status;
 	}
@@ -44,14 +70,39 @@ public class Payment {
 	public Payment() {
 		super();
 	}
-	public Payment(long paymentId, long orderId, long amount, PaymentStatus status, LocalDateTime createdAt) {
-		super();
-		this.paymentId = paymentId;
-		this.orderId = orderId;
-		this.amount = amount;
-		this.status = status;
-		this.createdAt = createdAt;
+	public BigDecimal getAmount() {
+		return amount;
 	}
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
+	public Account getAccount() {
+		return account;
+	}
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+	public PaymentType getPaymentType() {
+		return paymentType;
+	}
+	public void setPaymentType(PaymentType paymentType) {
+		this.paymentType = paymentType;
+	}
+	public long getUserId() {
+		return userId;
+	}
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
+	
+	
+	public String getUniqueKey() {
+		return uniqueKey;
+	}
+	public void setUniqueKey(String uniqueKey) {
+		this.uniqueKey = uniqueKey;
+	}
+
 	
 	
 }

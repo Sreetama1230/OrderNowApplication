@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.app.product.dto.ErrorDTO;
+import com.app.product.error.dto.ErrorDTO;
 
 @ControllerAdvice
 public class CustomExceptionHandler {
@@ -16,6 +16,13 @@ public class CustomExceptionHandler {
 		return new ResponseEntity<ErrorDTO>(new ErrorDTO(exception.getMessage(), HttpStatus.NOT_FOUND),
 				HttpStatus.NOT_FOUND);
 	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorDTO> handleInvalidOrderException(InvalidOrderException exception) {
+		return new ResponseEntity<ErrorDTO>(new ErrorDTO(exception.getMessage(), HttpStatus.NOT_FOUND),
+				HttpStatus.NOT_FOUND);
+	}
+	
 	
 	@ExceptionHandler
 	public ResponseEntity<ErrorDTO> handleInsufficientQuantityException(InsufficientQuantityException exception) {
